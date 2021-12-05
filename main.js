@@ -1,24 +1,22 @@
-window.addEventListener("load", initialisaton)
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
+const puppeteer = require('puppeteer');
+const cookies = [{name: 'test', value: 'foo'}, {name: 'test2', value: 'foo'}]; // just as example, use real cookies here;
 
-console.log("hello")
+(async () => {
+  const browser = await puppeteer.launch({headless: false});
+  const page = await browser.newPage();
+  //await page.setCookie(...cookies);
+  await page.goto('https://www.oui.sncf/proposition/outward/train?wishId=4a1b0414-9656-42e9-bf3c-9d23fde72fc7');
+  await page.screenshot({ path: 'example.png' });
 
-let token = "67697fde-d4d9-465a-bf06-12e9f9a2515d"
-let backend =  "https://api.sncf.com/v1/coverage/sncf/";
+  //await browser.close();
+})();
 
 
-function test() {
-	fetch(backend + "commercial_modes", {method: 'GET', headers : {"authorization": token}})
-	.then(res=>res.json())
-	.then(json=>{
-        console.log(json)
-		let nom = document.querySelector(".test")
-		nom.innerHTML = JSON.stringify(json)
-
-	}).catch(function(error) {
-        console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
-      });
-}
-
-function initialisaton(){
-    document.querySelector("#button1").addEventListener("click", test);
-}
+function sleep(milliseconds) {
+	const date = Date.now();
+	let currentDate = null;
+	do {
+	  currentDate = Date.now();
+	} while (currentDate - date < milliseconds);
+  }

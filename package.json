@@ -1,0 +1,23 @@
+{
+  "name": "bottgvmax",
+  "version": "1.0.0",
+  "description": "Bonjour Matthieu,",
+  "main": "main.js",
+  "dependencies": {
+    "puppeteer": "^12.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Matthieu-Rambaud/botTGVmax.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Matthieu-Rambaud/botTGVmax/issues"
+  },
+  "homepage": "https://github.com/Matthieu-Rambaud/botTGVmax#readme"
+}
