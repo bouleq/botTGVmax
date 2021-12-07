@@ -74,7 +74,7 @@ for (let i = 0; i < inputValue.length; i++) {
 const Date = '15/12/2021'
 await page.keyboard.type(Date)
 //select the hours
-//await page.$eval('.vsb-oui-select', select => select.click());
+// await page.$eval("#schedule-select-startDate", select => select.value = 10);
 await page.keyboard.press("Tab");
 await page.keyboard.press('Enter');
 await page.keyboard.press('ArrowDown');
@@ -88,45 +88,53 @@ await page.$eval('span[class="oui-button__content___64135"]', button => button.c
 
 
 //click on "modifier le profil"
-await page.$eval('#vsb-button-passenger_1_train-launch', button => button.focus() );
-await page.keyboard.press('Tab');
-// await page.$eval( 'label[for="vsb-destination-train-launch"]', label => label.click() );
-// for (let i = 0; i < 23; i++){
-//   await page.keyboard.press("Tab");
-// }
-// await page.keyboard.press('Enter');
+// await page.$eval('#vsb-button-passenger_1_train-launch', button => button.focus() );
+// await page.keyboard.press('Tab');
+await page.$eval( 'label[for="vsb-destination-train-launch"]', label => label.click() );
+for (let i = 0; i < 11; i++){
+  await page.keyboard.press("Tab");
+  sleep(500)
+}
+await page.keyboard.press('Enter');
+sleep(500)
+await page.keyboard.press("Tab");
+sleep(500)
+await page.keyboard.press('Enter');
+sleep(500)
+await page.keyboard.press('ArrowDown');
+sleep(500)
+await page.keyboard.press('ArrowDown');
+sleep(500)
+await page.keyboard.press('Enter');
+sleep(500)
+await page.keyboard.press("Tab");
+sleep(500)
+await page.keyboard.type('23');
+sleep(500)
+await page.keyboard.press("Tab");
+sleep(500)
+await page.keyboard.press("Tab");
+sleep(500)
+await page.keyboard.press('Enter');
+sleep(500)
+await page.screenshot({ path: 'example.png' });
+await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click() );
 
-// await page.keyboard.press("Tab");
-// await page.keyboard.press('Enter');
-// await page.keyboard.press('ArrowDown');
-// await page.keyboard.press('ArrowDown');
-// await page.keyboard.press('Enter');
+await page.keyboard.press("Tab");
+await page.keyboard.type('300329812');
 
-// await page.keyboard.press("Tab");
-// await page.keyboard.type('23');
+await page.keyboard.press("Tab");
+await page.keyboard.type('27/02/1998');
 
-// await page.keyboard.press("Tab");
-// await page.keyboard.press("Tab");
-// sleep(500)
-// await page.keyboard.press('Enter');
-
-// await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click() );
-
-// await page.keyboard.press("Tab");
-// await page.keyboard.type('300329812');
-
-// await page.keyboard.press("Tab");
-// await page.keyboard.type('27/02/1998');
-
-// await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
-// await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
 
 // /////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
 
-// await page.$eval( '.oui-button__content___64135', form => form.click() );
+await page.$eval( '.oui-button__content___64135', form => form.click() );
   
   
-  //await page.screenshot({ path: 'example.png' });
+//   await page.screenshot({ path: 'example.png' });
   
 
 ///////////save new cookies //////////////////////////////////////////////////////////////////////////////
