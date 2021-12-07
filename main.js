@@ -90,6 +90,7 @@ await page.$eval('span[class="oui-button__content___64135"]', button => button.c
 //click on "modifier le profil"
 // await page.$eval('#vsb-button-passenger_1_train-launch', button => button.focus() );
 // await page.keyboard.press('Tab');
+//methods using tabs
 await page.$eval( 'label[for="vsb-destination-train-launch"]', label => label.click() );
 for (let i = 0; i < 11; i++){
   await page.keyboard.press("Tab");
@@ -118,21 +119,24 @@ sleep(500)
 await page.keyboard.press('Enter');
 sleep(500)
 await page.screenshot({ path: 'example.png' });
+//check the 'MAX jeune' box
 await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click() );
-
+//fill with the TGV max number
 await page.keyboard.press("Tab");
 await page.keyboard.type('300329812');
-
+//fill the birthdate
 await page.keyboard.press("Tab");
 await page.keyboard.type('27/02/1998');
-
+//click on 'Appliquer' button (twice)
 await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
 await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
 
 // /////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
 
 await page.$eval( '.oui-button__content___64135', form => form.click() );
-  
+// wait for the research to end
+sleep(10000)
+
   
 //   await page.screenshot({ path: 'example.png' });
   
