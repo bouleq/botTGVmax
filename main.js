@@ -62,6 +62,7 @@ puppeteer.use(StealthPlugin());
 
 
 ///////////fill the 'Date aller' field //////////////////////////////////////////////////////////////////////////////
+
 //date choice
 await page.$eval('span[class="vsb-date-time__label"]', button => button.click());
 //select the day
@@ -73,7 +74,7 @@ for (let i = 0; i < inputValue.length; i++) {
 const Date = '15/12/2021'
 await page.keyboard.type(Date)
 //select the hours
-//await page.$eval('div[class="oui-select__capsule___64135"]', select => select.class = 'oui-select__capsule-focused___64135')
+//await page.$eval('.vsb-oui-select', select => select.click());
 await page.keyboard.press("Tab");
 await page.keyboard.press('Enter');
 await page.keyboard.press('ArrowDown');
@@ -81,9 +82,48 @@ await page.keyboard.press('Enter');
 //press 'appliquer' button
 await page.$eval('span[class="oui-button__content___64135"]', button => button.click());
 
-///////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
+/////////add 'MAX jeune' subscription //////////////////////////////////////////////////////////////////////////////
 
-await page.$eval( '.oui-button__content___64135', form => form.click() );
+
+
+
+//click on "modifier le profil"
+await page.$eval('#vsb-button-passenger_1_train-launch', button => button.focus() );
+await page.keyboard.press('Tab');
+// await page.$eval( 'label[for="vsb-destination-train-launch"]', label => label.click() );
+// for (let i = 0; i < 23; i++){
+//   await page.keyboard.press("Tab");
+// }
+// await page.keyboard.press('Enter');
+
+// await page.keyboard.press("Tab");
+// await page.keyboard.press('Enter');
+// await page.keyboard.press('ArrowDown');
+// await page.keyboard.press('ArrowDown');
+// await page.keyboard.press('Enter');
+
+// await page.keyboard.press("Tab");
+// await page.keyboard.type('23');
+
+// await page.keyboard.press("Tab");
+// await page.keyboard.press("Tab");
+// sleep(500)
+// await page.keyboard.press('Enter');
+
+// await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click() );
+
+// await page.keyboard.press("Tab");
+// await page.keyboard.type('300329812');
+
+// await page.keyboard.press("Tab");
+// await page.keyboard.type('27/02/1998');
+
+// await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+// await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+
+// /////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
+
+// await page.$eval( '.oui-button__content___64135', form => form.click() );
   
   
   //await page.screenshot({ path: 'example.png' });
