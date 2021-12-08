@@ -131,13 +131,18 @@ await page.keyboard.type('27/02/1998');
 await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
 await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
 
-// /////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
+///////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
 
 await page.$eval( '.oui-button__content___64135', form => form.click() );
 // wait for the research to end
 sleep(10000)
 
-  
+///////////filter the trains //////////////////////////////////////////////////////////////////////////////
+//document.querySelector('.travel-result_wrapper__3Ctth > .travel-result_linkAndRow__G4OPp > .travel-row_wrapper__2LKxV > .vsd-wmj7ia > .vsd-1kir9vv > .vsd-101gsi7 > .vsd-nzr9qi > .vsd-1ixq4jd')
+//await page.$eval( 'travel-result_wrapper__3Ctth > .travel-result_linkAndRow__G4OPp > .travel-row_wrapper__2LKxV > .vsd-wmj7ia > .vsd-1kir9vv > .vsd-101gsi7 > .vsd-nzr9qi > .vsd-1ixq4jd',train => train.click() );
+
+var link = await page.$eval('.travel-result_wrapper__3Ctth > .travel-result_linkAndRow__G4OPp > .travel-row_wrapper__2LKxV > .vsd-wmj7ia', element=> element.getAttribute("id"))
+
 //   await page.screenshot({ path: 'example.png' });
   
 
