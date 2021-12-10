@@ -14,32 +14,28 @@ puppeteer.use(StealthPlugin());
 
 ///////////browser and page instantiation //////////////////////////////////////////////////////////////////////////////
 
-async function main () {
+async function main() {
   //open a browser
   let trouve = false;
-  let jour = 10;
-  while(!trouve){
-    try{
-      const browser = await puppeteer.launch({
-        headless: false, args: [
-          '--incognito',
-        ]
-      });
-      //creation of variable page which contains 1rst page of the browser
-      let page = (await browser.pages())[0]
+  let jour = 12;
+  let browser = await puppeteer.launch({
+    headless: false, args: [
+      '--incognito',
+    ]
+  });
+  //creation of variable page which contains 1rst page of the browser
+  let page = (await browser.pages())[0]
+  ///////////cookies management /////////////////////////////////////////////////////////////////////////////
+  //get the previous used cookies in the file httpbin-cookie.json
+  const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+  //parsing of the json
+  const deserializedCookies = JSON.parse(cookies);
+  //setting the page cookies
+  await page.setCookie(...deserializedCookies);
 
-
-
-      ///////////cookies management //////////////////////////////////////////////////////////////////////////////
-
-      //get the previous used cookies in the file httpbin-cookie.json
-      const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
-      //parsing of the json
-      const deserializedCookies = JSON.parse(cookies);
-      //setting the page cookies
-      await page.setCookie(...deserializedCookies);
-
-
+  while (!trouve) {
+    console.log("je rentre")
+    try {
       ///////////go to website and accept the thing//////////////////////////////////////////////////////////////////////////////
 
       //obvious
@@ -78,7 +74,7 @@ async function main () {
       for (let i = 0; i < inputValue.length; i++) {
         await page.keyboard.press('Backspace');
       }
-      const Date = jour.toString()+'/12/2021'
+      const Date = jour.toString() + '/12/2021'
       await page.keyboard.type(Date)
       //select the hours
       // await page.$eval("#schedule-select-startDate", select => select.value = 10);
@@ -148,9 +144,9 @@ async function main () {
       await page.goto(page.url())
       sleep(5000)
 
-    ///////////find the first TGV max of the time slot and make the reservation //////////////////////////////////////////////////////////////////////////////
+      ///////////find the first TGV max of the time slot and make the reservation //////////////////////////////////////////////////////////////////////////////
       //find
-    trouve = await page.evaluate(() => {
+      trouve = await page.evaluate(() => {
         //let trains = [];
         let elements = document.querySelectorAll('.travel-result_wrapper__3Ctth');
         let drapeau = false;
@@ -166,6 +162,7 @@ async function main () {
       sleep(1000)
       //make the reservation
       if (trouve) {
+        trouve = false
         await page.$eval('.vsd-bl85cy > .oui-button___64135 > .oui-button__content___64135', button => button.click());
         sleep(2000)
         await page.$eval('.vsd-15xy478 > .oui-button___64135 > span', button => button.click());
@@ -184,21 +181,43 @@ async function main () {
         sleep(2000)
         await page.$eval('.vsf-form__button > .oui-button___64136 > span', button => button.click());
         sleep(10000)
+        trouve = true
       }
-
+    }
+    catch (e) {
+      console.log(e)
+      trouve = "ban"
+    }
+   
     ///////////save new cookies //////////////////////////////////////////////////////////////////////////////
     //save the new cookies
     const cookies1 = await page.cookies();
     const cookieJson = JSON.stringify(cookies1);
     // And save this data to a JSON file
     fs.writeFileSync('httpbin-cookies.json', cookieJson);
-
     await browser.close();
-  }
-  finally {
-    sleep(300000)
-  }
-};   
+    sleep(10000)
+    if (trouve == "ban"){
+      sleep(1800000)
+      trouve = false
+    }
+    if (!trouve){
+      browser = await puppeteer.launch({
+        headless: false, args: [
+          '--incognito',
+        ]
+      });
+      //creation of variable page which contains 1rst page of the browser
+      page = (await browser.pages())[0]
+      ///////////cookies management /////////////////////////////////////////////////////////////////////////////
+      //get the previous used cookies in the file httpbin-cookie.json
+      const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+      //parsing of the json
+      const deserializedCookies = JSON.parse(cookies);
+      //setting the page cookies
+      await page.setCookie(...deserializedCookies);
+    }
+  };
 };
 
 
