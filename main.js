@@ -5,7 +5,12 @@ const fs = require('fs');
 //import puppeteer
 const puppeteer = require('puppeteer-extra');
 
+var logDatajson = fs.readFileSync('log.json', 'utf8');
+var logData = JSON.parse(logDatajson);
 
+//Nathan id = 0
+//Elorri id = 1
+const ID = 1;
 
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -17,7 +22,6 @@ puppeteer.use(StealthPlugin());
 async function main() {
   //open a browser
   let trouve = false;
-  let jour = 12;
   let browser = await puppeteer.launch({
     headless: false, args: [
       '--incognito',
@@ -48,7 +52,7 @@ async function main() {
       //click on the 'Départ' field
       await page.$eval('.oui-text-input__label___64135', label => label.click());
       //insert the departure city
-      await page.keyboard.type('Paris');
+      await page.keyboard.type(logData['person'][ID].DEPARTURE_CITY);
       sleep(1500)
       //select the first suggested city
       await page.keyboard.press('Enter');
@@ -58,7 +62,7 @@ async function main() {
       //click on the 'Arrivée' field
       await page.$eval('label[for="vsb-destination-train-launch"]', label => label.click());
       //insert the destination city
-      await page.keyboard.type('Grenoble');
+      await page.keyboard.type(logData['person'][ID].DESTINATION_CITY);
       sleep(1000)
       //select the first suggested city
       await page.keyboard.press('Enter');
@@ -74,18 +78,22 @@ async function main() {
       for (let i = 0; i < inputValue.length; i++) {
         await page.keyboard.press('Backspace');
       }
-      const Date = jour.toString() + '/12/2021'
+      const Date = logData['person'][ID].DATE
       await page.keyboard.type(Date)
       //select the hours
       // await page.$eval("#schedule-select-startDate", select => select.value = 10);
       await page.keyboard.press("Tab");
       await page.keyboard.press('Enter');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
+      for(let i = 0; i < (logData['person'][ID].HOUR - 6) /2; i++){
+        await page.keyboard.press('ArrowDown');
+      }
+      
+      // await page.keyboard.press('ArrowDown');
+      // await page.keyboard.press('ArrowDown');
+      // await page.keyboard.press('ArrowDown');
+      // await page.keyboard.press('ArrowDown');
+      // await page.keyboard.press('ArrowDown');
+
       await page.keyboard.press('Enter');
       //press 'appliquer' button
       await page.$eval('span[class="oui-button__content___64135"]', button => button.click());
@@ -126,10 +134,10 @@ async function main() {
       await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click());
       //fill with the TGV max number
       await page.keyboard.press("Tab");
-      await page.keyboard.type('300329812');
+      await page.keyboard.type(logData['person'][ID].TGV_MAX_CARD_NUMBER);
       //fill the birthdate
       await page.keyboard.press("Tab");
-      await page.keyboard.type('27/02/1998');
+      await page.keyboard.type(logData['person'][ID].BIRTH_DATE);
       //click on 'Appliquer' button (twice)
       await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
       await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
@@ -144,6 +152,20 @@ async function main() {
       await page.goto(page.url())
       sleep(5000)
 
+      ///////////roll out the list of trains //////////////////////////////////////////////////////////////////////////////
+      let next_trains = true
+      while(next_trains){
+        next_trains = await page.evaluate(() => {
+          return (document.querySelector('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]') != null);
+      })
+        if(next_trains){
+          await page.$eval('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]', link => link.click());
+          sleep(5000);
+        }
+      }
+      sleep(5000)
+
+
       ///////////find the first TGV max of the time slot and make the reservation //////////////////////////////////////////////////////////////////////////////
       //find
       trouve = await page.evaluate(() => {
@@ -151,9 +173,14 @@ async function main() {
         let elements = document.querySelectorAll('.travel-result_wrapper__3Ctth');
         let drapeau = false;
         elements.forEach(el => {
-          if (el.querySelector("span[data-auto='DATA_PRICE_BTN_PRICEBTN_SECOND']").getAttribute("data-price") == '0') {
-            el.querySelector("span[data-auto='DATA_PRICE_BTN_PRICEBTN_SECOND']").click()
-            drapeau = true
+          if (el.querySelector("span[data-auto='DATA_PRICE_BTN_PRICEBTN_SECOND']") == null){
+
+          }
+          else{
+            if (el.querySelector("span[data-auto='DATA_PRICE_BTN_PRICEBTN_SECOND']").getAttribute("data-price") == '0') {
+              el.querySelector("span[data-auto='DATA_PRICE_BTN_PRICEBTN_SECOND']").click()
+              drapeau = true
+            }
           }
         })
         return drapeau
