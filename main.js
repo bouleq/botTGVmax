@@ -152,7 +152,7 @@ async function main() {
         console.log('recherche effectuée')
       }
       ///////////roll out the list of trains //////////////////////////////////////////////////////////////////////////////
-      if (logData.TRAIN_ROLL_OUT)
+      if (logData.TRAIN_ROLL_OUT){
         let next_trains = true
         while(next_trains){
           next_trains = await page.evaluate(() => {
@@ -167,6 +167,7 @@ async function main() {
         if(logData.COMMENTS){
           console.log('page dépliée')
         }
+      }
 
       ///////////find the first TGV max of the time slot and make the reservation //////////////////////////////////////////////////////////////////////////////
       //find
