@@ -1,0 +1,35 @@
+{
+    "person":[
+    {
+        "id": "0",
+        "NAME": "",
+        "DEPARTURE_CITY": "",
+        "DESTINATION_CITY": "",
+        "DATE": "",
+        "HOUR": 12,
+        "TGV_MAX_CARD_NUMBER": "",
+        "BIRTH_DATE": ""   
+    },
+    {
+        "id": "1",
+        "NAME": "",
+        "DEPARTURE_CITY": "",
+        "DESTINATION_CITY": "",
+        "DATE": "",
+        "HOUR": 6,
+        "TGV_MAX_CARD_NUMBER": "",
+        "BIRTH_DATE": ""  
+    }
+],
+    
+    "VARIATION_a": 0.8,
+    "VARIATION_b": 1.2,
+
+    "SLEEP_DURATION_FALSE": 480000,
+    "SLEEP_DURATION_BAN": 1800000,
+
+    "COMMENTS": true,
+
+    "TRAIN_ROLL8_OUT": true
+
+}

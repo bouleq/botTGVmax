@@ -38,7 +38,6 @@ async function main() {
   await page.setCookie(...deserializedCookies);
 
   while (!trouve) {
-    console.log("je rentre")
     try {
       ///////////go to website and accept the thing//////////////////////////////////////////////////////////////////////////////
 
@@ -87,17 +86,13 @@ async function main() {
       for(let i = 0; i < (logData['person'][ID].HOUR - 6) /2; i++){
         await page.keyboard.press('ArrowDown');
       }
-      
-      // await page.keyboard.press('ArrowDown');
-      // await page.keyboard.press('ArrowDown');
-      // await page.keyboard.press('ArrowDown');
-      // await page.keyboard.press('ArrowDown');
-      // await page.keyboard.press('ArrowDown');
 
       await page.keyboard.press('Enter');
       //press 'appliquer' button
       await page.$eval('span[class="oui-button__content___64135"]', button => button.click());
-
+      if(logData.COMMENTS){
+        console.log('trajet + date ok')
+      }
       /////////add 'MAX jeune' subscription //////////////////////////////////////////////////////////////////////////////
 
       //click on "modifier le profil"
@@ -141,7 +136,9 @@ async function main() {
       //click on 'Appliquer' button (twice)
       await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
       await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
-
+      if(logData.COMMENTS){
+        console.log('carte TGV max ok')
+      }
       ///////////click on 'rechercher' button //////////////////////////////////////////////////////////////////////////////
 
       await page.$eval('.oui-button__content___64135', form => form.click());
@@ -151,20 +148,25 @@ async function main() {
       await page.reload();
       await page.goto(page.url())
       sleep(5000)
-
-      ///////////roll out the list of trains //////////////////////////////////////////////////////////////////////////////
-      let next_trains = true
-      while(next_trains){
-        next_trains = await page.evaluate(() => {
-          return (document.querySelector('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]') != null);
-      })
-        if(next_trains){
-          await page.$eval('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]', link => link.click());
-          sleep(5000);
-        }
+      if(logData.COMMENTS){
+        console.log('recherche effectuée')
       }
-      sleep(5000)
-
+      ///////////roll out the list of trains //////////////////////////////////////////////////////////////////////////////
+      if (logData.TRAIN_ROLL_OUT)
+        let next_trains = true
+        while(next_trains){
+          next_trains = await page.evaluate(() => {
+            return (document.querySelector('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]') != null);
+        })
+          if(next_trains){
+            await page.$eval('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]', link => link.click());
+            sleep(5000);
+          }
+        }
+        sleep(5000)
+        if(logData.COMMENTS){
+          console.log('page dépliée')
+        }
 
       ///////////find the first TGV max of the time slot and make the reservation //////////////////////////////////////////////////////////////////////////////
       //find
@@ -185,7 +187,9 @@ async function main() {
         })
         return drapeau
       });
-      console.log(trouve)
+      if(logData.COMMENTS){
+        console.log(trouve)
+      }  
       sleep(1000)
       //make the reservation
       if (trouve) {
@@ -209,6 +213,9 @@ async function main() {
         await page.$eval('.vsf-form__button > .oui-button___64136 > span', button => button.click());
         sleep(10000)
         trouve = true
+        if(logData.COMMENTS){
+          console.log('réservation effectuée')
+        } 
       }
     }
     catch (e) {
@@ -223,9 +230,9 @@ async function main() {
     // And save this data to a JSON file
     fs.writeFileSync('httpbin-cookies.json', cookieJson);
     await browser.close();
-    sleep(10000)
+    sleep(logData.SLEEP_DURATION_FALSE)
     if (trouve == "ban"){
-      sleep(1800000)
+      sleep(logData.SLEEP_DURATION_BAN)
       trouve = false
     }
     if (!trouve){
@@ -251,9 +258,10 @@ async function main() {
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
+  let alea = (logData.VARIATION_b - logData.VARIATION_a)*Math.random() + logData.VARIATION_a
   do {
     currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
+  } while (currentDate - date < milliseconds*alea);
 }
 
 
