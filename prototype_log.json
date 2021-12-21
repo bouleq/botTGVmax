@@ -30,6 +30,8 @@
 
     "COMMENTS": true,
 
-    "TRAIN_ROLL8_OUT": true
+    "TRAIN_ROLL8_OUT": true,
+
+    "PETIT_ECRAN": false
 
 }

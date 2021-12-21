@@ -23,12 +23,14 @@
 ],
     
     "VARIATION_a": 0.8,
-    "VARIATION_b": 1.2,
+    "VARIATION_b": 1.3,
 
-    "SLEEP_DURATION_FALSE": 10000,
-    "SLEEP_DURATION_BAN": 10000,
+    "SLEEP_DURATION_FALSE": 480000,
+    "SLEEP_DURATION_BAN": 1800000,
 
     "COMMENTS": true,
 
-    "TRAIN_ROLL_OUT": true
+    "TRAIN_ROLL_OUT": true,
+
+    "PETIT_ECRAN": false
 }

@@ -124,7 +124,6 @@ async function main() {
       sleep(500)
       await page.keyboard.press('Enter');
       sleep(500)
-      await page.screenshot({ path: 'example.png' });
       //check the 'MAX jeune' box
       await page.$eval('label[for="vsb-train-launch-card-HAPPY_CARD"]', label => label.click());
       //fill with the TGV max number
@@ -134,8 +133,14 @@ async function main() {
       await page.keyboard.press("Tab");
       await page.keyboard.type(logData['person'][ID].BIRTH_DATE);
       //click on 'Appliquer' button (twice)
-      await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
-      await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+      if(logData.PETIT_ECRAN){
+        await page.$eval('button[id="vsb-passenger-options-modal-button-confirm"] > span', button => button.click());
+        await page.$eval('button[id="vsb-passenger-options-modal-button-confirm"] > span', button => button.click());
+      }
+      else{
+        await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+        await page.$eval('#vsb-passenger-options-side-panel-button-confirm > span', button => button.click());
+      }
       if(logData.COMMENTS){
         console.log('carte TGV max ok')
       }
