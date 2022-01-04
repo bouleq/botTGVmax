@@ -31,7 +31,11 @@
     "COMMENTS": true,
 
     "TRAIN_ROLL8_OUT": true,
+    
+    "ROLL_OUT_NUMBER": 0,
 
-    "PETIT_ECRAN": false
+    "PETIT_ECRAN": false,
+
+    "HEADLESS": false
 
 }
