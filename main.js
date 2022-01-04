@@ -10,7 +10,7 @@ var logData = JSON.parse(logDatajson);
 
 //Nathan id = 0
 //Elorri id = 1
-const ID = 1;
+const ID = 0;
 
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -23,7 +23,7 @@ async function main() {
   //open a browser
   let trouve = false;
   let browser = await puppeteer.launch({
-    headless: false, args: [
+    headless: logData.HEADLESS, args: [
       '--incognito',
     ]
   });
@@ -171,6 +171,12 @@ async function main() {
         sleep(5000)
         if(logData.COMMENTS){
           console.log('page dépliée')
+        }
+      }
+      else if(logData.ROLL_OUT_NUMBER > 0){
+        for (let i = 0; i < logData.ROLL_OUT_NUMBER; i++){
+          await page.$eval('button[data-auto="LINK_TRAVEL_NEXT_HOUR"]', link => link.click());
+          sleep(5000); 
         }
       }
 
